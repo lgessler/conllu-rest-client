@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import './conllu-rest-client/api';
 
 function App() {
   return (
