@@ -4,17 +4,24 @@ export default class Api {
         this.token = token;
     }
 
-    _request(method, endpoint, body = {}) {
+    _request(method, endpoint, body = null) {
         const url = this.baseUrl + endpoint;
-        return fetch(url, {
+        const opts = {
             method: method,
             headers: {"Authorization": `Token ${this.token}`},
-            body: JSON.stringify(body)
-        });
+        }
+        if (body !== null) {
+            opts.body =  JSON.stringify(body)
+        }
+        return fetch(url, opts);
     }
 
     getDocument(id) {
         return this._request("GET", `/document/id/${id}`)
+    }
+
+    queryDocuments(offset = 0, limit = 25) {
+        return this._request("GET", `/document?offset=${offset}&limit=${limit}`)
     }
 
     getSentence(id) {
