@@ -9,19 +9,20 @@ export default class Api {
         const opts = {
             method: method,
             headers: {"Authorization": `Token ${this.token}`},
+            mode: "cors"
         }
         if (body !== null) {
             opts.body =  JSON.stringify(body)
         }
-        return fetch(url, opts);
-    }
-
-    getDocument(id) {
-        return this._request("GET", `/document/id/${id}`)
+        return fetch(url, opts).then(result => result.json());
     }
 
     queryDocuments(offset = 0, limit = 25) {
         return this._request("GET", `/document?offset=${offset}&limit=${limit}`)
+    }
+
+    getDocument(id) {
+        return this._request("GET", `/document/id/${id}`)
     }
 
     getSentence(id) {

@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
-import './conllu-rest-client/api';
+import Api from './conllu-rest-client/api';
+import React, { useState, useEffect } from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
+import Base from './conllu-rest-client/components';
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#556cd6',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    error: {
+      main: red.A400,
+    },
+  },
+});
+
 
 function App() {
+  useEffect(() => document.title = "CoNLL-U REST Client");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Base />
+      <CssBaseline />
+    </ThemeProvider>
   );
 }
 
