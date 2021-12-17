@@ -28,10 +28,9 @@ export default class Api {
         return fetch(url, opts);
     }
 
-    checkToken(token) {
-        return this._postRequest("/check-token", {"token": token});
-    }
-
+    // --------------------------------------------------------------------------------
+    // Gets
+    // --------------------------------------------------------------------------------
     queryDocuments(offset = 0, limit = 25) {
         return this._getRequest(`/conllu/document?offset=${offset}&limit=${limit}`)
             .then(result => result.json());
@@ -59,6 +58,25 @@ export default class Api {
 
     downloadConlluFile(documentId) {
         return this._getRequest(`/conllu/files/download/${documentId}`);
+    }
+
+    // --------------------------------------------------------------------------------
+    // Posts
+    // --------------------------------------------------------------------------------
+    checkToken(token) {
+        return this._postRequest("/check-token", {"token": token});
+    }
+
+    splitSentence(tokenId) {
+        return this._postRequest("/conllu/sentence/split", {"token-id": tokenId});
+    }
+
+    mergeSentenceLeft(sentenceId) {
+        return this._postRequest("/conllu/sentence/merge-left", {"sentence-id": sentenceId});
+    }
+
+    mergeSentenceRight(sentenceId) {
+        return this._postRequest("/conllu/sentence/merge-right", {"sentence-id": sentenceId});
     }
 
 }
