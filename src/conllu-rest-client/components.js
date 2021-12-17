@@ -117,7 +117,7 @@ function Document(props) {
   function Sentence(props) {
     async function merge(e) {
       e.preventDefault()
-      if (!busy) {
+      if (!busy && !insideToken) {
         setBusy(true);
         const result = await api.mergeSentenceLeft(props.id);
         setBusy(false);
