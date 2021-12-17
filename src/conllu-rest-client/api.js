@@ -4,41 +4,61 @@ export default class Api {
         this.token = token;
     }
 
-    _request(method, endpoint, body = null) {
+    _getRequest(endpoint) {
         const url = this.baseUrl + endpoint;
         const opts = {
-            method: method,
+            method: "GET",
             headers: {"Authorization": `Token ${this.token}`},
             mode: "cors"
         }
-        if (body !== null) {
-            opts.body =  JSON.stringify(body)
+        return fetch(url, opts);
+    }
+
+    _postRequest(endpoint, body) {
+        const url = this.baseUrl + endpoint;
+        const opts = {
+            method: "POST",
+            headers: {
+                "Authorization": `Token ${this.token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body),
+            mode: "cors"
         }
-        return fetch(url, opts).then(result => result.json());
+        return fetch(url, opts);
+    }
+
+    checkToken(token) {
+        return this._postRequest("/check-token", {"token": token});
     }
 
     queryDocuments(offset = 0, limit = 25) {
-        return this._request("GET", `/document?offset=${offset}&limit=${limit}`)
+        return this._getRequest(`/conllu/document?offset=${offset}&limit=${limit}`)
+            .then(result => result.json());
     }
 
     getDocument(id) {
-        return this._request("GET", `/document/id/${id}`)
+        return this._getRequest(`/conllu/document/id/${id}`)
+            .then(result => result.json());
     }
 
     getSentence(id) {
-        return this._request("GET", `/sentence/id/${id}`)
+        return this._getRequest(`/conllu/sentence/id/${id}`)
+            .then(result => result.json());
     }
 
     getConlluMetadata(id) {
-        return this._request("GET", `/conllu-metadata/id/${id}`)
+        return this._getRequest(`/conllu/conllu-metadata/id/${id}`)
+            .then(result => result.json());
     }
 
     getToken(id) {
-        return this._request("GET", `/token/id/${id}`)
+        return this._getRequest(`/conllu/token/id/${id}`)
+            .then(result => result.json());
     }
 
     downloadConlluFile(documentId) {
-        return this._request("GET", `/files/download/${documentId}`)
+        return this._getRequest(`/conllu/files/download/${documentId}`);
     }
 
 }
